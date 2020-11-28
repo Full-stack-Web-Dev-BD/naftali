@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
@@ -15,12 +15,15 @@ import './assets/scss/index.scss';
 import validators from './common/validators';
 import store from './store';
 import {
+  Account,
   Dashboard as DashboardView,
   SignUp as SignUpView,
 } from './views';
 import { Main as MainLayout } from './layouts';
 import { RouteWithLayout } from './components';
 import Login from 'views/Login/Login';
+import FormSubmission from 'views/FormSubmission/FormSubmission';
+import Result from 'views/Result/Result';
 
 
 
@@ -50,24 +53,70 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logoutUser());
     // Redirect to login
-    window.location.href = '/login';
+    if(decoded.type==='user'){
+      window.location.href = '/dashboard';
+    }
+    if(decoded.type==='user'){
+      window.location.href = '/form';
+    }
   }
 }
 
 
 const App = () => {
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+
+    if (localStorage.jwtToken) {
+      const decoded = jwt_decode(localStorage.jwtToken);
+      // Set user and isAuthenticated
+      setUser(decoded)
+    }
+  }, [])
+
+
+
+
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <Router history={browserHistory}>
           <Route exact path="/" component={Login} />
           <Route exact path="/sign-up" component={SignUpView} />
+
+          
           <Switch>
             <RouteWithLayout
               component={DashboardView}
               exact
               layout={MainLayout}
               path="/dashboard"
+            />
+          </Switch>
+          <Switch>
+            <RouteWithLayout
+              component={Account}
+              exact
+              layout={MainLayout}
+              path="/account"
+            />
+          </Switch>
+
+          <Switch>
+            <RouteWithLayout
+              component={FormSubmission}
+              exact
+              layout={MainLayout}
+              path="/form"
+            />
+          </Switch>
+          <Switch>
+            <RouteWithLayout
+              component={Result}
+              exact
+              layout={MainLayout}
+              path="/result"
             />
           </Switch>
         </Router>

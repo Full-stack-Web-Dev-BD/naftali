@@ -4,22 +4,12 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import EmailIcon from '@material-ui/icons/Email';
-import DeveloperBoardIcon from '@material-ui/icons/DeveloperBoard';
-import InfoIcon from '@material-ui/icons/Info';
-import WorkIcon from '@material-ui/icons/Work';
-import ListIcon from '@material-ui/icons/List';
 import FeedbackIcon from '@material-ui/icons/Feedback';
-
-
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import { SidebarNav } from './components';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -46,75 +36,44 @@ const useStyles = makeStyles(theme => ({
 
 const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
-
+  const {user}=props.auth
   const classes = useStyles();
 
-  const pages = [
+  const AdminPages = [
     {
       title: 'Dashboard',
       href: '/dashboard',
       icon: <DashboardIcon />
     },
     {
-      title: 'Emails',
-      href: '/emails',
-      icon: <EmailIcon />
-    },
-    {
-      title: 'About',
-      href: '/about',
-      icon: <InfoIcon />
-    },
-    {
-      title: 'Services',
-      href: '/services',
-      icon: <WorkIcon />
-    },
-    {
-      title: 'Technologies',
-      href: '/technologies',
-      icon: <ListIcon />
-    },
-    {
-      title: 'Projects',
-      href: '/projects',
-      icon: <DeveloperBoardIcon />
-    },
-    {
-      title: 'Products',
-      href: '/products',
-      icon: <ShoppingBasketIcon />
-    },
-    {
-      title: 'Our Clients',
-      href: '/clients',
-      icon: <PeopleIcon />
-    },
-    {
-      title: 'Our Employees',
-      href: '/employees',
-      icon: <PeopleIcon />
-    },
-    {
-      title: 'Client Reviews',
-      href: '/reviews',
+      title: 'Form  Submission',
+      href: '/form',
       icon: <FeedbackIcon />
-    },
-    {
-      title: 'Users',
-      href: '/users',
-      icon: <PeopleIcon />
-    },
-    {
-      title: 'Authentication',
-      href: '/sign-in',
-      icon: <LockOpenIcon />
     },
     {
       title: 'Account',
       href: '/account',
       icon: <AccountBoxIcon />
-    }
+    },
+  ];
+  
+  const UserPages = [
+    {
+      title: 'Form  Submission',
+      href: '/form',
+      icon: <AddBoxIcon />
+    },
+    
+    {
+      title: 'Result & Notification',
+      href: '/result',
+      icon: <NotificationsNoneIcon />
+    },
+    {
+      title: 'Account',
+      href: '/account',
+      icon: <AccountBoxIcon />
+    },
   ];
 
   return (
@@ -129,10 +88,17 @@ const Sidebar = props => {
         {...rest}
         className={clsx(classes.root, className)}
       >
-        <SidebarNav
-          className={classes.nav}
-          pages={pages}
-        />
+        {
+          user.type=='admin'?
+          <SidebarNav
+            className={classes.nav}
+            pages={AdminPages}
+          />:
+          <SidebarNav
+            className={classes.nav}
+            pages={UserPages}
+          />
+        }
       </div>
     </Drawer>
   );
@@ -144,5 +110,7 @@ Sidebar.propTypes = {
   open: PropTypes.bool.isRequired,
   variant: PropTypes.string.isRequired
 };
-
-export default Sidebar;
+const mapStateToProps=state=>({
+  auth:state.auth
+})
+export default connect(mapStateToProps,null)(Sidebar);

@@ -21,6 +21,10 @@ const userSchema=new Schema({
 	date:{
 		type:Date,
 		default:Date.now
+	},
+	userType:{
+		type:String,
+		default:'user'
 	}
 },{
 	collection:"users"

@@ -12,6 +12,7 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -19,39 +20,12 @@ const useStyles = makeStyles(() => ({
 
 const AccountDetails = props => {
   const { className, ...rest } = props;
-
+  const { user } = props.auth
   const classes = useStyles();
-
-  const [values, setValues] = useState({
-    firstName: 'Shen',
-    lastName: 'Zhi',
-    email: 'shen.zhi@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
-
-  const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
-
-  const states = [
-    {
-      value: 'alabama',
-      label: 'Alabama'
-    },
-    {
-      value: 'new-york',
-      label: 'New York'
-    },
-    {
-      value: 'san-francisco',
-      label: 'San Francisco'
-    }
-  ];
+  const logout=()=>{
+    window.localStorage.removeItem('jwtToken')
+    window.location.href="/"
+  }
 
   return (
     <Card
@@ -61,137 +35,22 @@ const AccountDetails = props => {
       <form
         autoComplete="off"
         noValidate
+        className="text-center"
       >
         <CardHeader
-          subheader="The information can be edited"
+          subheader="User Details"
           title="Profile"
         />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                margin="dense"
-                name="firstName"
-                onChange={handleChange}
-                required
-                value={values.firstName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Last name"
-                margin="dense"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Email Address"
-                margin="dense"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Phone Number"
-                margin="dense"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                margin="dense"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                // eslint-disable-next-line react/jsx-sort-props
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map(option => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Country"
-                margin="dense"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
+          <div className="text-center text-capitilized">
+            <p><b>Name : </b> {user.name} </p>
+            <p><b>Email : </b> {user.email} </p>
+            <p><b>Account Type : </b> {user.type} </p>
+            <Button onClick={logout} className="btn-danger" color="secondary" size="small" variant="contained">  Log Out </Button>
+          </div>
         </CardContent>
         <Divider />
-        <CardActions>
-          <Button
-            color="primary"
-            variant="contained"
-          >
-            Save details
-          </Button>
-        </CardActions>
       </form>
     </Card>
   );
@@ -200,5 +59,7 @@ const AccountDetails = props => {
 AccountDetails.propTypes = {
   className: PropTypes.string
 };
-
-export default AccountDetails;
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+export default connect(mapStateToProps, null)(AccountDetails);

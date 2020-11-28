@@ -153,7 +153,7 @@ const SignUp = props => {
     axios.post('/api/users/register', { name: name, email: email, password: password, confirmPassword: confirmPassword })
       .then(res => {
         console.log(res);
-        window.location.href = '/login'
+        window.location.href = '/'
       })
       .catch(err => {
         setError(err.response.data)

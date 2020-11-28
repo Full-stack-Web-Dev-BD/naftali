@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import jwt_decode from 'jwt-decode';
+
 import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
@@ -144,14 +146,22 @@ const Login = props => {
 
   const handleLogin = (event) => {
     event.preventDefault()
-    
     axios
-      .post('/api/users/login', {email, password})
+      .post('/api/users/login', { email, password })
       .then(res => {
         const { token } = res.data;
         localStorage.setItem('jwtToken', token);
+
+        const decoded = jwt_decode(localStorage.jwtToken);
+        if (decoded.type === 'user') {
+          window.location.href = '/dashboard';
+        }
+        if (decoded.type === 'user') {
+          window.location.href = '/form';
+        }
+
       })
-      .catch(err =>{
+      .catch(err => {
         setError(err.response.data)
       });
   }
@@ -188,7 +198,7 @@ const Login = props => {
                 onSubmit={handleLogin}
               >
                 <Typography variant="h3">
-                    Login here .
+                  Login here .
                 </Typography>
                 <TextField
                   className={classes.textField}
@@ -224,7 +234,7 @@ const Login = props => {
                 }
 
                 {
-                  email && password?
+                  email && password ?
 
                     <Button
                       className={classes.LoginButton}
@@ -234,7 +244,7 @@ const Login = props => {
                       type="submit"
                       variant="contained"
                     >
-                      Sign up now
+                      Sign in now
                     </Button> :
                     <Button
                       className={classes.LoginButton}

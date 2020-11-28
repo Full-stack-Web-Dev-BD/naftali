@@ -51,32 +51,6 @@ const Topbar = props => {
         <RouterLink to="/dashboard" style={{color:'white'}}>
           X-Solution
         </RouterLink>
-        <div className={classes.flexGrow} />
-        <Hidden mdDown>
-          <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Hidden>
-        <Hidden lgUp>
-          <IconButton
-            color="inherit"
-            onClick={onSidebarOpen}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Hidden>
-        <Avatar
-          alt="Person"
-          className={classes.avatar}
-          src={user.avatar}
-          onClick={(e)=>onLogoutClick(e)}
-        />
       </Toolbar>
     </AppBar>
   );

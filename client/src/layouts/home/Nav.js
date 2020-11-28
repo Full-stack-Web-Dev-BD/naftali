@@ -30,29 +30,6 @@ const Navbar=()=>{
             <div className="brand">
                 <Link onClick={()=> scroll.scrollToTop()}>X-Solution</Link>
             </div>
-            <ul className="navbar">
-                <li>
-                   <Link onClick={()=> scroll.scrollToTop()}>Home</Link>
-                </li>
-                <li>
-                   <Link to="about" smooth={true} duration={1000}>About</Link>
-                </li>
-                <li>
-                   <Link to="services" smooth={true} duration={1000}>Services</Link>
-                </li>
-                <li>
-                   <Link to="projects" smooth={true} duration={1000}>Projects</Link>
-                </li>
-                <li>
-                   <Link to="products" smooth={true} duration={1000}>Products</Link>
-                </li>
-                <li>
-                   <Link to="clients" smooth={true} duration={1000}>Our Clients</Link>
-                </li>
-                <li>
-                   <Link to="contact" smooth={true} duration={1000}>Contact</Link>
-                </li>
-            </ul>
         </nav>
     )
 }
