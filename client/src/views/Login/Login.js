@@ -12,6 +12,7 @@ import {
   Typography
 } from '@material-ui/core';
 import axios from 'axios'
+import { connect } from 'react-redux';
 const schema = {
   Name: {
     presence: { allowEmpty: false, message: 'is required' },
@@ -142,7 +143,18 @@ const Login = props => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const classes = useStyles();
 
-
+useEffect(()=>{
+  if(props.auth.user){
+    if(props.auth.user.type){
+      if (props.auth.user.type === 'user') {
+        window.location.href = '/dashboard';
+      }
+      if (props.auth.user.type === 'user') {
+        window.location.href = '/form';
+      }
+    }
+    }
+},[])
 
   const handleLogin = (event) => {
     event.preventDefault()
@@ -151,7 +163,6 @@ const Login = props => {
       .then(res => {
         const { token } = res.data;
         localStorage.setItem('jwtToken', token);
-
         const decoded = jwt_decode(localStorage.jwtToken);
         if (decoded.type === 'user') {
           window.location.href = '/dashboard';
@@ -159,13 +170,16 @@ const Login = props => {
         if (decoded.type === 'user') {
           window.location.href = '/form';
         }
-
       })
       .catch(err => {
         setError(err.response.data)
       });
   }
   return (
+    <div>
+      {
+      !props.auth.user.type?
+        
     <div className={classes.root}>
       <Grid
         className={classes.grid}
@@ -275,6 +289,9 @@ const Login = props => {
           </div>
         </Grid>
       </Grid>
+    </div>:
+    <h3>Loading</h3>
+}
     </div>
   );
 };
@@ -282,5 +299,7 @@ const Login = props => {
 Login.propTypes = {
   history: PropTypes.object
 };
-
-export default withRouter(Login);
+const mapStateToProps=state=>({
+  auth:state.auth
+})
+export default  connect(mapStateToProps,null) (Login);

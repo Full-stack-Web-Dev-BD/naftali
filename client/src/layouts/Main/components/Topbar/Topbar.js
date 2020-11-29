@@ -48,7 +48,15 @@ const Topbar = props => {
       className={clsx(classes.root, className)}
     >
       <Toolbar>
-        <RouterLink to="/dashboard" style={{color:'white'}}>
+        <Hidden lgUp>
+          <IconButton
+            color="inherit"
+            onClick={onSidebarOpen}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Hidden>
+        <RouterLink to="/" style={{color:'white'}}>
           X-Solution
         </RouterLink>
       </Toolbar>
@@ -67,3 +75,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, { logoutUser})(
   Topbar
 );
+
+
+
