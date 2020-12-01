@@ -1,33 +1,12 @@
-import { Button, Card, CardContent, Input, TextField } from '@material-ui/core'
+import { Button, Card, CardContent, TextField } from '@material-ui/core'
 import Axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
-import FileViewer from '../FileViewer'
-
-const Form = (props) => {
+import React, { useState } from 'react'
+import qs from 'query-string'
+const FormDetails = () => {
     const [existingForm, setExistingForm] = useState({})
-
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [dateOfBirth, setDateOfBirth] = useState('')
-    const [cityOfBirth, setCityOfBirth] = useState('')
-    const [citizenship, setCitizenship] = useState('')
-    const [address, setAddress] = useState('')
-    const [streetName, setStreetName] = useState('')
-    const [postCode, setPostCode] = useState('')
-    const [city, setCity] = useState('')
-    const [residendy, setResidendy] = useState('')
-    const [IDFront, setIDFront] = useState()
-    const [IDBack, setIDBack] = useState()
-    const [addressProof, setAddressProof] = useState('')
-    const [selfieVerification, setSelfieVerification] = useState()
-    const [bankStatement, setBankStatement] = useState()
-    const [originofFunds, setOriginofFunds] = useState('')
-    const [fundsOriginExplanation, setFundsOriginExplanation] = useState()
-
-
-    useEffect(() => {
-        Axios.get(`/api/form/findUserForm/${props.auth.user.id}`)
+    useState(() => {
+        let url = qs.parse(window.location.search)
+        Axios.get(`/api/form/getSingleForm/${url.formid}`)
             .then(res => {
                 setExistingForm(res.data)
             })
@@ -36,160 +15,167 @@ const Form = (props) => {
             })
     }, [])
 
-
-    const submithandler = (event) => {
-        event.preventDefault()
-        let info = {
-            UID: props.auth.user.id,
-            firstName,
-            lastName,
-            dateOfBirth,
-            cityOfBirth,
-            citizenship,
-            address,
-            streetName,
-            postCode,
-            city,
-            residendy,
-            IDFront,
-            IDBack,
-            addressProof,
-            selfieVerification,
-            bankStatement,
-            originOfFounds: originofFunds,
-            foundsOriginExplanation: fundsOriginExplanation
-        }
-        Axios.post('/api/form/submitForm', info)
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-    const uploadFile = (event, setterFunction) => {
-        event.preventDefault()
-        let data = new FormData()
-        data.append('file', event.target.files[0])
-        Axios.post('/api/form/uploadFile', data)
-            .then(res => {
-                setterFunction(res.data.filename)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
     const detectExtension = (fileName) => {
         let ext = fileName.split('.')[1]
         return ext
     }
+    const acceptFormFiled =(status)=>{
+        console.log(status);
+    }
+    return (
+        <div className="col-md-8 offset-md-2 mt-5">
+            <Card>
+                <CardContent>
 
-    return (<Card>
-        <CardContent>
-            {
-                existingForm ?
-
-                    <form onSubmit={e => submithandler(e)} className="text-left">
+                    <form className="text-left">
                         <h4 className="text-center"> Submitted  Form </h4>
                         <div className="row text-left">
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.firstName}
-                                    onChange={e => setFirstName(e.target.value)}
-                                    label="First Name"
+                                    // label="First Name"
                                     fullWidth
                                 />
-                                <label  ><b>Status :</b> {existingForm.firstNameStatus}</label>
+                                {
+                                    existingForm.firstNameStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({firstNameStatus:existingForm.firstNameStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
+                                <label><b>Status :</b> {existingForm.firstNameStatus}</label>
                             </div>
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.lastName}
-                                    onChange={e => setLastName(e.target.value)}
-                                    label="Last Name"
+                                    // label="Last Name"
                                     fullWidth
                                 />
+                                {
+
+                                    existingForm.lastNameStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({lastNameStatus:existingForm.lastNameStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status :</b> {existingForm.lastNameStatus}</label>
                             </div>
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.dateOfBirth}
-                                    onChange={e => setDateOfBirth(e.target.value)}
-                                    label="Date of Birth"
+                                    // label="Date of Birth"
                                     fullWidth
                                 />
+                                {
+
+                                    existingForm.firstNameStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({firstNameStatus:existingForm.firstNameStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status :</b> {existingForm.dateOfBirthStatus}</label>
                             </div>
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.cityOfBirth}
-                                    onChange={e => setCityOfBirth(e.target.value)}
-                                    label="City of Birth"
+                                    // label="City of Birth"
                                     fullWidth
                                 />
+                                {
+
+                                    existingForm.cityOfBirthStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({cityOfBirthStatus:existingForm.cityOfBirthStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status :</b> {existingForm.cityOfBirthStatus}</label>
                             </div>
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.citizenship}
-                                    onChange={e => setCitizenship(e.target.value)}
-                                    label="Citizenship "
+                                    // label="Citizenship "
                                     fullWidth
                                 />
+                                {
+
+                                    existingForm.citizenshipStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({citizenshipStatus:existingForm.citizenshipStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status : </b> {existingForm.citizenshipStatus} </label>
                             </div>
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.address}
-                                    onChange={e => setAddress(e.target.value)}
-                                    label="Address"
+                                    // label="Address"
                                     fullWidth
                                 />
+                                {
+
+                                    existingForm.addressStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({addressStatus:existingForm.addressStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status :</b> {existingForm.addressStatus}</label>
                             </div>
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.streetName}
-                                    onChange={e => setStreetName(e.target.value)}
-                                    label="Street  Name"
+                                    // label="Street  Name"
                                     fullWidth
                                 />
+                                {
+
+                                    existingForm.streetNameStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({streetNameStatus:existingForm.streetNameStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status :</b> {existingForm.streetNameStatus}</label>
                             </div>
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.postCode}
-                                    onChange={e => setPostCode(e.target.value)}
-                                    label="Post Code"
+                                    // label="Post Code"
                                     fullWidth
                                 />
+                                {
+
+                                    existingForm.postCodeStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({postCodeStatus:existingForm.postCodeStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status</b> {existingForm.postCodeStatus} </label>
                             </div>
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.city}
-                                    onChange={e => setCity(e.target.value)}
-                                    label="City"
+                                    // label="City"
                                     fullWidth
                                 />
+                                {
+
+                                    existingForm.postCodeStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({postCodeStatus:existingForm.postCodeStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status :</b> {existingForm.cityStatus}</label>
                             </div>
                             <div className="col-md-4">
                                 <TextField
                                     disabled
                                     value={existingForm.residendy}
-                                    onChange={e => setResidendy(e.target.value)}
-                                    label="Residendy"
+                                    // label="Residendy"
                                     fullWidth
                                 />
+                                {
+                                    existingForm.residendyStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({residendyStatus:existingForm.residendyStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status :</b> {existingForm.residendyStatus}</label>
                             </div>
                         </div>
@@ -207,7 +193,6 @@ const Form = (props) => {
                                                     <input
                                                         disabled
                                                         // value={existingForm.IDFront}
-                                                        onChange={e => uploadFile(e, setIDFront)}
                                                         type="file"
                                                         accept=" application/pdf, image/*"
                                                         className="form-control"
@@ -224,6 +209,12 @@ const Form = (props) => {
                                         </div> :
                                         <p>File Not found</p>
                                 }
+                                {
+
+                                    existingForm.IDFrontStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({IDFrontStatus:existingForm.IDFrontStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status : </b> {existingForm.IDFrontStatus} </label>
                             </div>
                             <div className="col-md-6">
@@ -236,8 +227,7 @@ const Form = (props) => {
                                                         disabled
                                                         // value={existingForm.IDBack}
                                                         className="form-control"
-                                                        onChange={e => uploadFile(e, setIDBack)}
-                                                        label="ID Back"
+                                                        // label="ID Back"
                                                         type="file"
                                                         accept=" application/pdf, image/*"
                                                     /> :
@@ -253,6 +243,12 @@ const Form = (props) => {
                                         </div> :
                                         <p>File Not found</p>
                                 }
+                                {
+
+                                    existingForm.IDBackStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({IDBackStatus:existingForm.IDBackStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status : </b> {existingForm.IDBackStatus} </label>
                             </div>
                             <div className="col-md-6">
@@ -266,8 +262,7 @@ const Form = (props) => {
                                                         disabled
                                                         // value={existingForm.addressProof}
                                                         accept=" application/pdf, image/*"
-                                                        onChange={e => uploadFile(e, setAddressProof)}
-                                                        label="Address Proof"
+                                                        // label="Address Proof"
                                                         type="file"
                                                         className="form-control"
                                                     /> :
@@ -284,6 +279,12 @@ const Form = (props) => {
                                         </div> :
                                         <p>File Not found</p>
                                 }
+                                {
+
+                                    existingForm.addressProofStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({addressProofStatus:existingForm.addressProofStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status : </b> {existingForm.addressProofStatus} </label>
 
                             </div>
@@ -299,8 +300,7 @@ const Form = (props) => {
                                                         // value={existingForm.selfieVerification}
                                                         accept=" application/pdf, image/*"
                                                         type="file"
-                                                        onChange={e => uploadFile(e, setSelfieVerification)}
-                                                        label="Selfie Verification "
+                                                        // label="Selfie Verification "
                                                         className="form-control"
                                                     /> :
                                                     <div>
@@ -314,6 +314,12 @@ const Form = (props) => {
                                             }
                                         </div> :
                                         <p>File Not found</p>
+                                }
+                                {
+
+                                    existingForm.selfieVerificationStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({selfieVerificationStatus:existingForm.selfieVerificationStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
                                 }
                                 <label><b>Status : </b> {existingForm.selfieVerificationStatus} </label>
 
@@ -332,8 +338,7 @@ const Form = (props) => {
                                                     <input
                                                         disabled
                                                         // value={existingForm.bankStatement}
-                                                        onChange={e => uploadFile(e, setBankStatement)}
-                                                        label="Bank Statement "
+                                                        // label="Bank Statement "
                                                         type="file"
                                                         accept=" application/pdf, image/*"
                                                         className="form-control"
@@ -350,6 +355,12 @@ const Form = (props) => {
                                         </div> :
                                         <p>File Not found</p>
                                 }
+                                {
+
+                                    existingForm.bankStatementStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({bankStatementStatus:existingForm.bankStatementStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status : </b> {existingForm.bankStatementStatus} </label>
 
                             </div>
@@ -357,219 +368,43 @@ const Form = (props) => {
                                 <TextField
                                     disabled
                                     value={existingForm.originOfFounds}
-                                    onChange={e => setOriginofFunds(e.target.value)}
-                                    label="Origin  of Funds"
+                                    // label="Origin  of Funds"
                                     fullWidth
                                 />
+                                {
+
+                                    existingForm.originOfFoundsStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({originOfFoundsStatus:existingForm.originOfFoundsStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status :</b> {existingForm.originOfFoundsStatus}</label>
                             </div>
                             <div className="col-md-12">
                                 <TextField
                                     disabled
                                     value={existingForm.foundsOriginExplanationStatus}
-                                    onChange={e => setFundsOriginExplanation(e.target.value)}
-                                    label="Funds origin explanation"
+                                    // label="Funds origin explanation"
                                     fullWidth
                                     rows="3"
                                 />
+                                {
+
+                                    existingForm.foundsOriginExplanationStatus === 'pending' ?
+                                        <Button onClick={e=>{acceptFormFiled({foundsOriginExplanationStatus:existingForm.foundsOriginExplanationStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                        : ''
+                                }
                                 <label><b>Status :</b> {existingForm.foundsOriginExplanationStatus}</label>
                             </div>
                         </div>
                         <div className="text-right pt-4">
                             <Button color="secondary" type="submit" variant="contained" size="small"  >Update  Verification</Button>
                         </div>
-                    </form> :
-
-                    <form onSubmit={e => submithandler(e)} className="text-left">
-                        <h4 className="text-center"> Verification Form 1</h4>
-                        <div className="row text-left">
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setFirstName(e.target.value)}
-                                    label="First Name"
-                                    fullWidth
-                                />
-                                <label>First Name</label>
-                            </div>
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setLastName(e.target.value)}
-                                    label="Last Name"
-                                    fullWidth
-                                />
-                                <label>Last Name</label>
-                            </div>
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setDateOfBirth(e.target.value)}
-                                    label="Date of Birth"
-                                    fullWidth
-                                />
-                                <label>Date of Birth</label>
-                            </div>
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setCityOfBirth(e.target.value)}
-                                    label="City of Birth"
-                                    fullWidth
-                                />
-                                <label>City of Birth</label>
-                            </div>
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setCitizenship(e.target.value)}
-                                    label="Citizenship "
-                                    fullWidth
-                                />
-                                <label>Citizenship </label>
-                            </div>
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setAddress(e.target.value)}
-                                    label="Address"
-                                    fullWidth
-                                />
-                                <label>Address</label>
-                            </div>
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setStreetName(e.target.value)}
-                                    label="Street  Name"
-                                    fullWidth
-                                />
-                                <label>Street  Name</label>
-                            </div>
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setPostCode(e.target.value)}
-                                    label="Post Code"
-                                    fullWidth
-                                />
-                                <label>Post Code</label>
-                            </div>
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setCity(e.target.value)}
-                                    label="City"
-                                    fullWidth
-                                />
-                                <label>City</label>
-                            </div>
-                            <div className="col-md-4">
-                                <TextField
-                                    onChange={e => setResidendy(e.target.value)}
-                                    label="Residendy"
-                                    fullWidth
-                                />
-                                <label>Residendy</label>
-                            </div>
-                        </div>
-
-
-                        <hr />
-                        <div className="row">
-                            <div className="col-md-6">
-                                <input
-                                    onChange={e => uploadFile(e, setIDFront)}
-                                    type="file"
-                                    accept=" application/pdf, image/*"
-                                    className="form-control"
-                                />
-                                <label>ID Front</label>
-
-                            </div>
-                            <div className="col-md-6">
-                                <input
-                                    className="form-control"
-                                    onChange={e => uploadFile(e, setIDBack)}
-                                    label="ID Back"
-                                    type="file"
-                                    accept=" application/pdf, image/*"
-                                />
-                                <label>ID Back</label>
-                            </div>
-                            <div className="col-md-6">
-                                <input
-                                    accept=" application/pdf, image/*"
-                                    onChange={e => uploadFile(e, setAddressProof)}
-                                    label="Address Proof"
-                                    type="file"
-                                    className="form-control"
-                                />
-                                <label>Address Proof</label>
-                            </div>
-                            <div className="col-md-6">
-                                <input
-                                    accept=" application/pdf, image/*"
-                                    type="file"
-                                    onChange={e => uploadFile(e, setSelfieVerification)}
-                                    label="Selfie Verification "
-                                    className="form-control"
-                                />
-                                <label>Selfie Verification </label>
-                            </div>
-                        </div>
-                        <hr />
-                        <div className="row">
-                            <div className="col-md-6">
-                                <input
-                                    onChange={e => uploadFile(e, setBankStatement)}
-                                    label="Bank Statement "
-                                    type="file"
-                                    accept=" application/pdf, image/*"
-                                    className="form-control"
-                                />
-                                <label>Bank Statement </label>
-                            </div>
-                            <div className="col-md-6">
-                                <TextField
-                                    onChange={e => setOriginofFunds(e.target.value)}
-                                    label="Origin  of Funds"
-                                    fullWidth
-                                />
-                                <label>Origin  of Funds</label>
-                            </div>
-                            <div className="col-md-12">
-                                <TextField
-                                    onChange={e => setFundsOriginExplanation(e.target.value)}
-                                    label="Funds origin explanation"
-                                    fullWidth
-                                    rows="3"
-                                />
-                                <label>Funds origin explanation</label>
-                            </div>
-                        </div>
-                        <div className="text-right pt-4">
-                            {
-
-                                firstName &&
-                                    lastName &&
-                                    dateOfBirth &&
-                                    cityOfBirth &&
-                                    citizenship &&
-                                    address &&
-                                    streetName &&
-                                    postCode &&
-                                    city &&
-                                    residendy &&
-                                    IDFront &&
-                                    IDBack &&
-                                    addressProof &&
-                                    selfieVerification &&
-                                    bankStatement &&
-                                    originofFunds && fundsOriginExplanation ?
-                                    <Button color="secondary" type="submit" variant="contained" size="small"  >Submit Verification</Button> :
-                                    <Button color="secondary" variant="outlined" size="small"  >Fill up Rqquired Filed</Button>
-
-                            }
-                        </div>
                     </form>
-            }
-        </CardContent >
-    </Card >
+
+                </CardContent>
+            </Card>
+        </div>
     )
 }
-const mapStateToProps = state => ({
-    auth: state.auth
-})
-export default connect(mapStateToProps, null)(Form)
+
+export default FormDetails

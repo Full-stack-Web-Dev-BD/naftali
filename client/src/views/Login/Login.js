@@ -143,18 +143,18 @@ const Login = props => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const classes = useStyles();
 
-useEffect(()=>{
-  if(props.auth.user){
-    if(props.auth.user.type){
-      if (props.auth.user.type === 'user') {
-        window.location.href = '/dashboard';
-      }
-      if (props.auth.user.type === 'user') {
-        window.location.href = '/form';
+  useEffect(() => {
+    if (props.auth.user) {
+      if (props.auth.user.type) {
+        if (props.auth.user.type === 'user') {
+          window.location.href = '/dashboard';
+        }
+        if (props.auth.user.type === 'user') {
+          window.location.href = '/form';
+        }
       }
     }
-    }
-},[])
+  }, [])
 
   const handleLogin = (event) => {
     event.preventDefault()
@@ -176,122 +176,92 @@ useEffect(()=>{
       });
   }
   return (
-    <div>
+    <div className="mt-5">
       {
-      !props.auth.user.type?
-        
-    <div className={classes.root}>
-      <Grid
-        className={classes.grid}
-        container
-      >
-        <Grid
-          className={classes.quoteContainer}
-          item
-          lg={5}
-        >
-          <div className={classes.quote}>
-            <div className={classes.quoteInner}>
-              <Typography
-                className={classes.quoteText}
-                variant="h1"
-              >During the pandemic, voiceover work has become a consistent resource for me to generate revenue.</Typography>
-            </div>
-          </div>
-        </Grid>
-        <Grid
-          className={classes.content}
-          item
-          lg={7}
-          xs={12}
-        >
-          <div className={classes.content}>
-            <div className={classes.contentBody}>
-              <form
-                className={classes.form}
-                onSubmit={handleLogin}
-              >
+        !props.auth.user.type ?
+          <div style={{ marginTop: '200px' }} className="col-md-6 offset-md-3">
+            <form
+              className={classes.form}
+              onSubmit={handleLogin}
+            >
+              {/* <img src={`/uploads/img.png`} width="100" height="100" /> */}
                 <Typography variant="h3">
-                  Login here .
+                Login here .
                 </Typography>
-                <TextField
-                  className={classes.textField}
-                  fullWidth
-                  label="Email"
-                  name="email"
-                  onChange={e => setEmail(e.target.value)}
-                  error={error.email ? true : false}
-                  type="email"
-                  variant="outlined"
-                />
+              <TextField
+                className={classes.textField}
+                fullWidth
+                label="Email"
+                name="email"
+                onChange={e => setEmail(e.target.value)}
+                error={error.email ? true : false}
+                type="email"
+                variant="outlined"
+              />
 
-                {
-                  error.email ?
-                    <p className="text-danger"> {error.email} </p>
-                    : ''
-                }
-                <TextField
-                  className={classes.textField}
-                  fullWidth
-                  error={error.password ? true : false}
-                  label="Password"
-                  name="Password"
-                  onChange={e => setPassword(e.target.value)}
-                  type="password"
-                  variant="outlined"
-                />
+              {
+                error.email ?
+                  <p className="text-danger"> {error.email} </p>
+                  : ''
+              }
+              <TextField
+                className={classes.textField}
+                fullWidth
+                error={error.password ? true : false}
+                label="Password"
+                name="Password"
+                onChange={e => setPassword(e.target.value)}
+                type="password"
+                variant="outlined"
+              />
 
-                {
-                  error.password ?
-                    <p className="text-danger"> {error.password} </p>
-                    : ''
-                }
+              {
+                error.password ?
+                  <p className="text-danger"> {error.password} </p>
+                  : ''
+              }
 
-                {
-                  email && password ?
+              {
+                email && password ?
 
-                    <Button
-                      className={classes.LoginButton}
-                      color="primary"
-                      fullWidth
-                      size="large"
-                      type="submit"
-                      variant="contained"
-                    >
-                      Sign in now
+                  <Button
+                    className={classes.LoginButton}
+                    color="primary"
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                  >
+                    Sign in now
                     </Button> :
-                    <Button
-                      className={classes.LoginButton}
-                      fullWidth
-                      size="large"
-                      type="submit"
-                      variant="contained"
-                    >
-                      Please Fill up All Required  Filled
+                  <Button
+                    className={classes.LoginButton}
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                  >
+                    Please Fill up All Required  Filled
                 </Button>
 
-                }
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
+              }
+              <Typography
+                color="textSecondary"
+                variant="body1"
+              >
+                Don't have account?{''}
+                <Link
+                  component={RouterLink}
+                  to="/sign-up"
+                  variant="h6"
                 >
-                  Don't have account?{''}
-                  <Link
-                    component={RouterLink}
-                    to="/sign-up"
-                    variant="h6"
-                  >
-                    Sign up
+                  Sign up
                   </Link>
-                </Typography>
-              </form>
-            </div>
-          </div>
-        </Grid>
-      </Grid>
-    </div>:
-    <h3>Loading</h3>
-}
+              </Typography>
+            </form>
+          </div> :
+          <h3>Loading</h3>
+      }
     </div>
   );
 };
@@ -299,7 +269,7 @@ useEffect(()=>{
 Login.propTypes = {
   history: PropTypes.object
 };
-const mapStateToProps=state=>({
-  auth:state.auth
+const mapStateToProps = state => ({
+  auth: state.auth
 })
-export default  connect(mapStateToProps,null) (Login);
+export default connect(mapStateToProps, null)(Login);

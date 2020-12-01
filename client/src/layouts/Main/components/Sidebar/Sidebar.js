@@ -10,6 +10,7 @@ import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { SidebarNav } from './components';
 import { connect } from 'react-redux';
+import { FileCopyOutlined, FormatBoldOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -46,8 +47,8 @@ const Sidebar = props => {
       icon: <DashboardIcon />
     },
     {
-      title: 'Form  Submission',
-      href: '/form',
+      title: 'Form ',
+      href: '/availableForm',
       icon: <FeedbackIcon />
     },
     {
@@ -55,6 +56,7 @@ const Sidebar = props => {
       href: '/account',
       icon: <AccountBoxIcon />
     },
+    
   ];
   
   const UserPages = [
@@ -73,6 +75,12 @@ const Sidebar = props => {
       title: 'Account',
       href: '/account',
       icon: <AccountBoxIcon />
+    },
+    
+    {
+      title: 'Form ',
+      href: '/availableForm',
+      icon: <FormatBoldOutlined />
     },
   ];
 

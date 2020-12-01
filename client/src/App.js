@@ -24,6 +24,8 @@ import { RouteWithLayout } from './components';
 import Login from 'views/Login/Login';
 import FormSubmission from 'views/FormSubmission/FormSubmission';
 import Result from 'views/Result/Result';
+import AvailableForm from 'views/AvailableForm/AvailableForm';
+import FormDetails from 'views/FormDetails/FormDetails';
 
 
 
@@ -109,6 +111,24 @@ const App = () => {
               exact
               layout={MainLayout}
               path="/form"
+            />
+          </Switch>
+          
+          <Switch>
+            <RouteWithLayout
+              component={AvailableForm}
+              exact
+              layout={MainLayout}
+              path="/availableForm"
+            />
+          </Switch>
+          
+          <Switch>
+            <RouteWithLayout
+              component={FormDetails}
+              exact
+              layout={MainLayout}
+              path="/formDetails"
             />
           </Switch>
           <Switch>
