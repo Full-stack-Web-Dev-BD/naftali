@@ -2,9 +2,12 @@ import { Button, Card, CardContent, TextField } from '@material-ui/core'
 import Axios from 'axios'
 import React, { useState } from 'react'
 import qs from 'query-string'
-const FormDetails = () => {
-    const [existingForm, setExistingForm] = useState({})
-    useState(() => {
+import { connect } from 'react-redux'
+const FormDetails = (props) => {
+    const { user } = props.auth
+
+    let getData = () => {
+
         let url = qs.parse(window.location.search)
         Axios.get(`/api/form/getSingleForm/${url.formid}`)
             .then(res => {
@@ -13,14 +16,37 @@ const FormDetails = () => {
             .catch(err => {
                 console.log(err);
             })
+    }
+    const [existingForm, setExistingForm] = useState({})
+    useState(() => {
+        getData()
     }, [])
-
     const detectExtension = (fileName) => {
         let ext = fileName.split('.')[1]
         return ext
     }
-    const acceptFormFiled =(status)=>{
-        console.log(status);
+    const acceptFormFiled = (status) => {
+        let updatedExisingForm = existingForm
+        updatedExisingForm[status.statusName] = 'accepted'
+        Axios.post(`/api/form/acceptFiled/${user.id}`, { updatedForm: updatedExisingForm })
+            .then(res => {
+                getData()
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    const rejectFormFiled = (status) => {
+
+        let updatedExisingForm = existingForm
+        updatedExisingForm[status.statusName] = 'rejected'
+        Axios.post(`/api/form/acceptFiled/${user.id}`, { updatedForm: updatedExisingForm })
+            .then(res => {
+                getData()
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
     return (
         <div className="col-md-8 offset-md-2 mt-5">
@@ -31,6 +57,7 @@ const FormDetails = () => {
                         <h4 className="text-center"> Submitted  Form </h4>
                         <div className="row text-left">
                             <div className="col-md-4">
+                                <p>First Name</p>
                                 <TextField
                                     disabled
                                     value={existingForm.firstName}
@@ -38,13 +65,18 @@ const FormDetails = () => {
                                     fullWidth
                                 />
                                 {
-                                    existingForm.firstNameStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({firstNameStatus:existingForm.firstNameStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.firstNameStatus === 'pending' || existingForm.firstNameStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ firstNameStatus: existingForm.firstNameStatus, statusName: 'firstNameStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ firstNameStatus: existingForm.firstNameStatus, statusName: 'firstNameStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.firstNameStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p>Last Name</p>
+
                                 <TextField
                                     disabled
                                     value={existingForm.lastName}
@@ -53,13 +85,17 @@ const FormDetails = () => {
                                 />
                                 {
 
-                                    existingForm.lastNameStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({lastNameStatus:existingForm.lastNameStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.lastNameStatus === 'pending' || existingForm.lastNameStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ lastNameStatus: existingForm.lastNameStatus, statusName: 'lastNameStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ lastNameStatus: existingForm.lastNameStatus, statusName: 'lastNameStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.lastNameStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p> Date of Birth</p>
                                 <TextField
                                     disabled
                                     value={existingForm.dateOfBirth}
@@ -68,13 +104,17 @@ const FormDetails = () => {
                                 />
                                 {
 
-                                    existingForm.firstNameStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({firstNameStatus:existingForm.firstNameStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.dateOfBirthStatus === 'pending' || existingForm.dateOfBirthStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ dateOfBirthStatus: existingForm.dateOfBirthStatus, statusName: 'dateOfBirthStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ dateOfBirthStatus: existingForm.dateOfBirthStatus, statusName: 'dateOfBirthStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.dateOfBirthStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p>City of Birth</p>
                                 <TextField
                                     disabled
                                     value={existingForm.cityOfBirth}
@@ -83,13 +123,17 @@ const FormDetails = () => {
                                 />
                                 {
 
-                                    existingForm.cityOfBirthStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({cityOfBirthStatus:existingForm.cityOfBirthStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.cityOfBirthStatus === 'pending' || existingForm.cityOfBirthStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ cityOfBirthStatus: existingForm.cityOfBirthStatus, statusName: 'cityOfBirthStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ cityOfBirthStatus: existingForm.cityOfBirthStatus, statusName: 'cityOfBirthStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.cityOfBirthStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p>Citizenship</p>
                                 <TextField
                                     disabled
                                     value={existingForm.citizenship}
@@ -98,13 +142,17 @@ const FormDetails = () => {
                                 />
                                 {
 
-                                    existingForm.citizenshipStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({citizenshipStatus:existingForm.citizenshipStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.citizenshipStatus === 'pending' || existingForm.citizenshipStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ citizenshipStatus: existingForm.citizenshipStatus, statusName: 'citizenshipStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ citizenshipStatus: existingForm.citizenshipStatus, statusName: 'citizenshipStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status : </b> {existingForm.citizenshipStatus} </label>
                             </div>
                             <div className="col-md-4">
+                                <p>Address</p>
                                 <TextField
                                     disabled
                                     value={existingForm.address}
@@ -113,13 +161,17 @@ const FormDetails = () => {
                                 />
                                 {
 
-                                    existingForm.addressStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({addressStatus:existingForm.addressStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.addressStatus === 'pending' || existingForm.addressStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ addressStatus: existingForm.addressStatus, statusName: 'addressStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ addressStatus: existingForm.addressStatus, statusName: 'addressStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.addressStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p>Street Name</p>
                                 <TextField
                                     disabled
                                     value={existingForm.streetName}
@@ -128,13 +180,17 @@ const FormDetails = () => {
                                 />
                                 {
 
-                                    existingForm.streetNameStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({streetNameStatus:existingForm.streetNameStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.streetNameStatus === 'pending' || existingForm.streetNameStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ streetNameStatus: existingForm.streetNameStatus, statusName: 'streetNameStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ streetNameStatus: existingForm.streetNameStatus, statusName: 'streetNameStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.streetNameStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p>Post Code</p>
                                 <TextField
                                     disabled
                                     value={existingForm.postCode}
@@ -143,13 +199,17 @@ const FormDetails = () => {
                                 />
                                 {
 
-                                    existingForm.postCodeStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({postCodeStatus:existingForm.postCodeStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.postCodeStatus === 'pending' || existingForm.postCodeStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ postCodeStatus: existingForm.postCodeStatus, statusName: 'postCodeStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ postCodeStatus: existingForm.postCodeStatus, statusName: 'postCodeStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status</b> {existingForm.postCodeStatus} </label>
                             </div>
                             <div className="col-md-4">
+                                <p>City</p>
                                 <TextField
                                     disabled
                                     value={existingForm.city}
@@ -158,13 +218,17 @@ const FormDetails = () => {
                                 />
                                 {
 
-                                    existingForm.postCodeStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({postCodeStatus:existingForm.postCodeStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.cityStatus === 'pending' || existingForm.cityStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ cityStatus: existingForm.cityStatus, statusName: 'cityStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ cityStatus: existingForm.cityStatus, statusName: 'cityStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.cityStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p>Residendy</p>
                                 <TextField
                                     disabled
                                     value={existingForm.residendy}
@@ -172,8 +236,11 @@ const FormDetails = () => {
                                     fullWidth
                                 />
                                 {
-                                    existingForm.residendyStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({residendyStatus:existingForm.residendyStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.residendyStatus === 'pending' || existingForm.residendyStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ residendyStatus: existingForm.residendyStatus, statusName: 'residendyStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ residendyStatus: existingForm.residendyStatus, statusName: 'residendyStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.residendyStatus}</label>
@@ -184,9 +251,9 @@ const FormDetails = () => {
                         <hr />
                         <div className="row">
                             <div className="col-md-6">
-
+                                {/* <p>ID Front</p> */}
                                 {
-                                    existingForm.IDBack ?
+                                    existingForm.IDFront ?
                                         <div>
                                             {
                                                 existingForm.IDFrontStatus === 'rejected' ?
@@ -211,13 +278,17 @@ const FormDetails = () => {
                                 }
                                 {
 
-                                    existingForm.IDFrontStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({IDFrontStatus:existingForm.IDFrontStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.IDFrontStatus === 'pending' || existingForm.IDFrontStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ IDFrontStatus: existingForm.IDFrontStatus, statusName: 'IDFrontStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ IDFrontStatus: existingForm.IDFrontStatus, statusName: 'IDFrontStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status : </b> {existingForm.IDFrontStatus} </label>
                             </div>
                             <div className="col-md-6">
+                                {/* <p>ID Back</p> */}
                                 {
                                     existingForm.IDBack ?
                                         <div>
@@ -245,16 +316,19 @@ const FormDetails = () => {
                                 }
                                 {
 
-                                    existingForm.IDBackStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({IDBackStatus:existingForm.IDBackStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.IDBackStatus === 'pending' || existingForm.IDBackStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ IDBackStatus: existingForm.IDBackStatus, statusName: 'IDBackStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ IDBackStatus: existingForm.IDBackStatus, statusName: 'IDBackStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status : </b> {existingForm.IDBackStatus} </label>
                             </div>
                             <div className="col-md-6">
-
+                                {/* <p>Address Proof</p> */}
                                 {
-                                    existingForm.IDBack ?
+                                    existingForm.addressProof ?
                                         <div>
                                             {
                                                 existingForm.addressProofStatus === 'rejected' ?
@@ -281,17 +355,20 @@ const FormDetails = () => {
                                 }
                                 {
 
-                                    existingForm.addressProofStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({addressProofStatus:existingForm.addressProofStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.addressProofStatus === 'pending' || existingForm.addressProofStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ addressProofStatus: existingForm.addressProofStatus, statusName: 'addressProofStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ addressProofStatus: existingForm.addressProofStatus, statusName: 'addressProofStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status : </b> {existingForm.addressProofStatus} </label>
 
                             </div>
                             <div className="col-md-6">
-
+                                {/* <p>Selfie Verification</p> */}
                                 {
-                                    existingForm.IDBack ?
+                                    existingForm.selfieVerification ?
                                         <div>
                                             {
                                                 existingForm.selfieVerificationStatus === 'rejected' ?
@@ -317,8 +394,11 @@ const FormDetails = () => {
                                 }
                                 {
 
-                                    existingForm.selfieVerificationStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({selfieVerificationStatus:existingForm.selfieVerificationStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.selfieVerificationStatus === 'pending' || existingForm.selfieVerificationStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ selfieVerificationStatus: existingForm.selfieVerificationStatus, statusName: 'selfieVerificationStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { acceptFormFiled({ rejectieVerificationStatus: existingForm.selfieVerificationStatus, statusName: 'selfieVerificationStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status : </b> {existingForm.selfieVerificationStatus} </label>
@@ -328,9 +408,9 @@ const FormDetails = () => {
                         <hr />
                         <div className="row">
                             <div className="col-md-6">
-
+                                {/* <p>Bank Statement </p> */}
                                 {
-                                    existingForm.IDBack ?
+                                    existingForm.bankStatement ?
                                         <div>
                                             {
                                                 existingForm.bankStatementStatus === 'rejected' ?
@@ -357,14 +437,18 @@ const FormDetails = () => {
                                 }
                                 {
 
-                                    existingForm.bankStatementStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({bankStatementStatus:existingForm.bankStatementStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.bankStatementStatus === 'pending' || existingForm.bankStatementStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ bankStatementStatus: existingForm.bankStatementStatus, statusName: 'bankStatementStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ bankStatementStatus: existingForm.bankStatementStatus, statusName: 'bankStatementStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status : </b> {existingForm.bankStatementStatus} </label>
 
                             </div>
                             <div className="col-md-6">
+                                <p>Origin of Founds</p>
                                 <TextField
                                     disabled
                                     value={existingForm.originOfFounds}
@@ -373,32 +457,39 @@ const FormDetails = () => {
                                 />
                                 {
 
-                                    existingForm.originOfFoundsStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({originOfFoundsStatus:existingForm.originOfFoundsStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.originOfFoundsStatus === 'pending' || existingForm.originOfFoundsStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ originOfFoundsStatus: existingForm.originOfFoundsStatus, statusName: 'originOfFoundsStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { rejectFormFiled({ originOfFoundsStatus: existingForm.originOfFoundsStatus, statusName: 'originOfFoundsStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.originOfFoundsStatus}</label>
                             </div>
                             <div className="col-md-12">
+                                <p>Funds Origin Explanation</p>
                                 <TextField
                                     disabled
-                                    value={existingForm.foundsOriginExplanationStatus}
+                                    value={existingForm.foundsOriginExplanation}
                                     // label="Funds origin explanation"
                                     fullWidth
                                     rows="3"
                                 />
                                 {
 
-                                    existingForm.foundsOriginExplanationStatus === 'pending' ?
-                                        <Button onClick={e=>{acceptFormFiled({foundsOriginExplanationStatus:existingForm.foundsOriginExplanationStatus})}} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                    existingForm.foundsOriginExplanationStatus === 'pending' || existingForm.foundsOriginExplanationStatus === 'updated' ?
+                                        <div>
+                                            <Button onClick={e => { acceptFormFiled({ foundsOriginExplanationStatus: existingForm.foundsOriginExplanationStatus, statusName: 'foundsOriginExplanationStatus' }) }} size="small" variant="outlined" color="secondary" > Aprove</Button>
+                                            <Button onClick={e => { acceptFormFiled({ rejectdsOriginExplanationStatus: existingForm.foundsOriginExplanationStatus, statusName: 'foundsOriginExplanationStatus' }) }} size="small" variant="contained" color="primary" > Reject</Button>
+                                        </div>
                                         : ''
                                 }
                                 <label><b>Status :</b> {existingForm.foundsOriginExplanationStatus}</label>
                             </div>
                         </div>
-                        <div className="text-right pt-4">
+                        {/* <div className="text-right pt-4">
                             <Button color="secondary" type="submit" variant="contained" size="small"  >Update  Verification</Button>
-                        </div>
+                        </div> */}
                     </form>
 
                 </CardContent>
@@ -406,5 +497,7 @@ const FormDetails = () => {
         </div>
     )
 }
-
-export default FormDetails
+const mapStateToProps = state => ({
+    auth: state.auth
+})
+export default connect(mapStateToProps, null)(FormDetails)

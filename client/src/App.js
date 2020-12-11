@@ -26,6 +26,7 @@ import FormSubmission from 'views/FormSubmission/FormSubmission';
 import Result from 'views/Result/Result';
 import AvailableForm from 'views/AvailableForm/AvailableForm';
 import FormDetails from 'views/FormDetails/FormDetails';
+import UpdateForm from 'views/FormSubmission/Form/UpdateForm';
 
 
 
@@ -52,15 +53,15 @@ if (localStorage.jwtToken) {
   // Check for expired token
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
-    // Logout user
-    store.dispatch(logoutUser());
-    // Redirect to login
-    if(decoded.type==='user'){
-      window.location.href = '/dashboard';
-    }
-    if(decoded.type==='user'){
-      window.location.href = '/form';
-    }
+    // // Logout user
+    // store.dispatch(logoutUser());
+    // // Redirect to login
+    // if(decoded.type==='user'){
+    //   window.location.href = '/dashboard';
+    // }
+    // if(decoded.type==='user'){
+    //   window.location.href = '/form';
+    // }
   }
 }
 
@@ -137,6 +138,14 @@ const App = () => {
               exact
               layout={MainLayout}
               path="/result"
+            />
+          </Switch>
+          <Switch>
+            <RouteWithLayout
+              component={UpdateForm}
+              exact
+              layout={MainLayout}
+              path="/update-form"
             />
           </Switch>
         </Router>

@@ -26,8 +26,6 @@ const userSchema=new Schema({
 		type:String,
 		default:'user'
 	}
-},{
-	collection:"users"
 })
 
 module.exports=User=mongoose.model('users',userSchema);

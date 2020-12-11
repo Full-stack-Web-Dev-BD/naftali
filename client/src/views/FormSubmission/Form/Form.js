@@ -2,6 +2,7 @@ import { Button, Card, CardContent, Input, TextField } from '@material-ui/core'
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import FileViewer from '../FileViewer'
 
 const Form = (props) => {
@@ -93,102 +94,112 @@ const Form = (props) => {
                         <h4 className="text-center"> Submitted  Form </h4>
                         <div className="row text-left">
                             <div className="col-md-4">
+                                <p className="mt-5">First Name</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.firstNameStatus === 'rejected' ? false : true}
                                     value={existingForm.firstName}
-                                    onChange={e => setFirstName(e.target.value)}
-                                    label="First Name"
+                                    onChange={e => existingForm.firstName=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label  ><b>Status :</b> {existingForm.firstNameStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p className="mt-5">Last Name</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.lastNameStatus === 'rejected' ? false : true}
                                     value={existingForm.lastName}
-                                    onChange={e => setLastName(e.target.value)}
-                                    label="Last Name"
+                                    onChange={e => existingForm.lastName=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label><b>Status :</b> {existingForm.lastNameStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p className="mt-5">Date of Birth</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.dateOfBirthStatus === 'rejected' ? false : true}
                                     value={existingForm.dateOfBirth}
-                                    onChange={e => setDateOfBirth(e.target.value)}
-                                    label="Date of Birth"
+                                    onChange={e => existingForm.dateOfBirth=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label><b>Status :</b> {existingForm.dateOfBirthStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p className="mt-5">City of Birth</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.cityOfBirthStatus === 'rejected' ? false : true}
                                     value={existingForm.cityOfBirth}
-                                    onChange={e => setCityOfBirth(e.target.value)}
-                                    label="City of Birth"
+                                    onChange={e => existingForm.cityOfBirth=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label><b>Status :</b> {existingForm.cityOfBirthStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p className="mt-5">Citizenship </p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.citizenshipStatus === 'rejected' ? false : true}
                                     value={existingForm.citizenship}
-                                    onChange={e => setCitizenship(e.target.value)}
-                                    label="Citizenship "
+                                    onChange={e => existingForm.citizenship=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label><b>Status : </b> {existingForm.citizenshipStatus} </label>
                             </div>
                             <div className="col-md-4">
+                                <p className="mt-5">Address</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.addressStatus === 'rejected' ? false : true}
                                     value={existingForm.address}
-                                    onChange={e => setAddress(e.target.value)}
-                                    label="Address"
+                                    onChange={e => existingForm.address=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label><b>Status :</b> {existingForm.addressStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p className="mt-5">Street  Name</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.streetNameStatus === 'rejected' ? false : true}
                                     value={existingForm.streetName}
-                                    onChange={e => setStreetName(e.target.value)}
-                                    label="Street  Name"
+                                    onChange={e => existingForm.streetName=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label><b>Status :</b> {existingForm.streetNameStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p className="mt-5">Post Code</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.postCodeStatus === 'rejected' ? false : true}
                                     value={existingForm.postCode}
-                                    onChange={e => setPostCode(e.target.value)}
-                                    label="Post Code"
+                                    onChange={e => existingForm.postCode=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label><b>Status</b> {existingForm.postCodeStatus} </label>
                             </div>
                             <div className="col-md-4">
+                                <p className="mt-5">City</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.cityStatus === 'rejected' ? false : true}
                                     value={existingForm.city}
-                                    onChange={e => setCity(e.target.value)}
-                                    label="City"
+                                    onChange={e => existingForm.city=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label><b>Status :</b> {existingForm.cityStatus}</label>
                             </div>
                             <div className="col-md-4">
+                                <p className="mt-5">Residendy</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.residendyStatus === 'rejected' ? false : true}
                                     value={existingForm.residendy}
-                                    onChange={e => setResidendy(e.target.value)}
-                                    label="Residendy"
+                                    onChange={e => existingForm.residendy=e.target.value}
                                     fullWidth
+                                    
                                 />
                                 <label><b>Status :</b> {existingForm.residendyStatus}</label>
                             </div>
@@ -210,10 +221,10 @@ const Form = (props) => {
                                                         onChange={e => uploadFile(e, setIDFront)}
                                                         type="file"
                                                         accept=" application/pdf, image/*"
-                                                        className="form-control"
+                                                        className="form-control mt-5"
                                                     /> :
-                                                    <div>
-                                                        <p> ID Front</p>
+                                                    <div className="mt-5">
+                                                        <p className="mt-5"> ID Front</p>
                                                         {
                                                             detectExtension(existingForm.IDFront) === 'pdf' ?
                                                                 <embed src={`/uploads/${existingForm.IDFront}`} width="100%" height="200px" /> :
@@ -222,7 +233,7 @@ const Form = (props) => {
                                                     </div>
                                             }
                                         </div> :
-                                        <p>File Not found</p>
+                                        <p className="mt-5">File Not found</p>
                                 }
                                 <label><b>Status : </b> {existingForm.IDFrontStatus} </label>
                             </div>
@@ -241,8 +252,8 @@ const Form = (props) => {
                                                         type="file"
                                                         accept=" application/pdf, image/*"
                                                     /> :
-                                                    <div>
-                                                        <p> ID Back </p>
+                                                    <div className="mt-5">
+                                                        <p className="mt-5"> ID Back </p>
                                                         {
                                                             detectExtension(existingForm.IDBack) === 'pdf' ?
                                                                 <embed src={`/uploads/${existingForm.IDBack}`} width="100%" height="200px" /> :
@@ -251,7 +262,7 @@ const Form = (props) => {
                                                     </div>
                                             }
                                         </div> :
-                                        <p>File Not found</p>
+                                        <p className="mt-5">File Not found</p>
                                 }
                                 <label><b>Status : </b> {existingForm.IDBackStatus} </label>
                             </div>
@@ -271,7 +282,7 @@ const Form = (props) => {
                                                         type="file"
                                                         className="form-control"
                                                     /> :
-                                                    <div>
+                                                    <div className="mt-5">
 
                                                         <label>Address Proof</label>
                                                         {
@@ -282,7 +293,7 @@ const Form = (props) => {
                                                     </div>
                                             }
                                         </div> :
-                                        <p>File Not found</p>
+                                        <p className="mt-5">File Not found</p>
                                 }
                                 <label><b>Status : </b> {existingForm.addressProofStatus} </label>
 
@@ -303,7 +314,7 @@ const Form = (props) => {
                                                         label="Selfie Verification "
                                                         className="form-control"
                                                     /> :
-                                                    <div>
+                                                    <div className="mt-5">
                                                         <label>Selfie Verification </label>
                                                         {
                                                             detectExtension(existingForm.selfieVerification) === 'pdf' ?
@@ -313,7 +324,7 @@ const Form = (props) => {
                                                     </div>
                                             }
                                         </div> :
-                                        <p>File Not found</p>
+                                        <p className="mt-5">File Not found</p>
                                 }
                                 <label><b>Status : </b> {existingForm.selfieVerificationStatus} </label>
 
@@ -336,9 +347,9 @@ const Form = (props) => {
                                                         label="Bank Statement "
                                                         type="file"
                                                         accept=" application/pdf, image/*"
-                                                        className="form-control"
+                                                        className="form-control mt-5"
                                                     /> :
-                                                    <div>
+                                                    <div className="mt-5">
                                                         <label>Bank Statement </label>
                                                         {
                                                             detectExtension(existingForm.bankStatement) === 'pdf' ?
@@ -348,37 +359,43 @@ const Form = (props) => {
                                                     </div>
                                             }
                                         </div> :
-                                        <p>File Not found</p>
+                                        <p className="mt-5">File Not found</p>
                                 }
                                 <label><b>Status : </b> {existingForm.bankStatementStatus} </label>
 
                             </div>
                             <div className="col-md-6">
+                                <p className="mt-5">Origin  of Funds</p>
                                 <TextField
-                                    disabled
+                                    disabled={existingForm.originOfFoundsStatus === 'rejected' ? false : true}
                                     value={existingForm.originOfFounds}
-                                    onChange={e => setOriginofFunds(e.target.value)}
-                                    label="Origin  of Funds"
+                                    onChange={e => existingForm.originOfFounds=e.target.value}
                                     fullWidth
                                 />
                                 <label><b>Status :</b> {existingForm.originOfFoundsStatus}</label>
                             </div>
                             <div className="col-md-12">
+                                <p className="mt-5"> Funds origin explanation </p>
                                 <TextField
-                                    disabled
-                                    value={existingForm.foundsOriginExplanationStatus}
-                                    onChange={e => setFundsOriginExplanation(e.target.value)}
-                                    label="Funds origin explanation"
+                                    disabled={existingForm.foundsOriginExplanationStatus === 'rejected' ? false : true}
+                                    value={existingForm.foundsOriginExplanation}
+                                    onChange={e => existingForm.foundsOriginExplanation=e.target.value}
                                     fullWidth
                                     rows="3"
                                 />
                                 <label><b>Status :</b> {existingForm.foundsOriginExplanationStatus}</label>
                             </div>
                         </div>
-                        <div className="text-right pt-4">
-                            <Button color="secondary" type="submit" variant="contained" size="small"  >Update  Verification</Button>
+
+                        <div>
+                            <Link to='/update-form'>
+                            <Button variant="contained" color="primary" size="small" >Update Form (resubmit)</Button>
+                            </Link>
                         </div>
-                    </form> :
+                    </form>
+
+
+                    :
 
                     <form onSubmit={e => submithandler(e)} className="text-left">
                         <h4 className="text-center"> Verification Form 1</h4>
@@ -403,6 +420,7 @@ const Form = (props) => {
                                 <TextField
                                     onChange={e => setDateOfBirth(e.target.value)}
                                     label="Date of Birth"
+                                    type="date"
                                     fullWidth
                                 />
                                 <label>Date of Birth</label>
@@ -411,6 +429,7 @@ const Form = (props) => {
                                 <TextField
                                     onChange={e => setCityOfBirth(e.target.value)}
                                     label="City of Birth"
+                                    type="date"
                                     fullWidth
                                 />
                                 <label>City of Birth</label>
@@ -473,14 +492,14 @@ const Form = (props) => {
                                     onChange={e => uploadFile(e, setIDFront)}
                                     type="file"
                                     accept=" application/pdf, image/*"
-                                    className="form-control"
+                                    className="form-control mt-5"
                                 />
                                 <label>ID Front</label>
 
                             </div>
                             <div className="col-md-6">
                                 <input
-                                    className="form-control"
+                                    className="form-control mt-5"
                                     onChange={e => uploadFile(e, setIDBack)}
                                     label="ID Back"
                                     type="file"
@@ -494,7 +513,7 @@ const Form = (props) => {
                                     onChange={e => uploadFile(e, setAddressProof)}
                                     label="Address Proof"
                                     type="file"
-                                    className="form-control"
+                                    className="form-control mt-5"
                                 />
                                 <label>Address Proof</label>
                             </div>
@@ -504,7 +523,7 @@ const Form = (props) => {
                                     type="file"
                                     onChange={e => uploadFile(e, setSelfieVerification)}
                                     label="Selfie Verification "
-                                    className="form-control"
+                                    className="form-control mt-5"
                                 />
                                 <label>Selfie Verification </label>
                             </div>
@@ -517,7 +536,7 @@ const Form = (props) => {
                                     label="Bank Statement "
                                     type="file"
                                     accept=" application/pdf, image/*"
-                                    className="form-control"
+                                    className="form-control mt-5"
                                 />
                                 <label>Bank Statement </label>
                             </div>
@@ -559,7 +578,23 @@ const Form = (props) => {
                                     bankStatement &&
                                     originofFunds && fundsOriginExplanation ?
                                     <Button color="secondary" type="submit" variant="contained" size="small"  >Submit Verification</Button> :
-                                    <Button color="secondary" variant="outlined" size="small"  >Fill up Rqquired Filed</Button>
+                                    <Button color="secondary" variant="outlined" size="small" onClick={e => console.log(
+                                        firstName,
+                                        lastName,
+                                        dateOfBirth,
+                                        cityOfBirth,
+                                        citizenship,
+                                        address,
+                                        streetName,
+                                        postCode,
+                                        city,
+                                        residendy,
+                                        IDFront,
+                                        IDBack,
+                                        addressProof,
+                                        selfieVerification,
+                                        bankStatement,
+                                        originofFunds, fundsOriginExplanation)}   >Fill up Rqquired Filed</Button>
 
                             }
                         </div>

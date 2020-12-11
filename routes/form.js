@@ -16,7 +16,9 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    // if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'pdf') {
+    if ( true ) {
+        console.log(file.mimetype);
         cb(null, true)
     } else {
         cb(null, false)
@@ -74,6 +76,41 @@ formRouter.get('/getSingleForm/:id',(req,res)=>{
     })
     .catch(err=>{
         res.json(err)
+    })
+})
+formRouter.post('/acceptFiled/:id',(req,res)=>{
+    console.log(req.body.updatedForm);
+    Form.findOneAndUpdate({UID:req.params.id},req.body.updatedForm)
+    .then(form=>{
+        console.log('upated',form);
+        res.json(form)
+    })
+    .catch(err=>{
+        res.json(err)
+        console.log(err);
+    })
+})
+formRouter.post('/rejectFiled/:id',(req,res)=>{
+    Form.findOneAndUpdate({UID:req.params.id},req.body.updatedForm)
+    .then(form=>{
+        console.log('upated',form);
+        res.json(form)
+    })
+    .catch(err=>{
+        res.json(err)
+        console.log(err);
+    })
+})
+formRouter.post('/resubmit',(req,res)=>{
+    console.log(req.body);
+    Form.findOneAndUpdate({UID:req.body.UID},req.body)
+    .then(form=>{
+        console.log('upated',form);
+        res.json(form)
+    })
+    .catch(err=>{
+        res.json(err)
+        console.log(err);
     })
 })
 module.exports = formRouter

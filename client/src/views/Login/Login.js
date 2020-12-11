@@ -146,8 +146,8 @@ const Login = props => {
   useEffect(() => {
     if (props.auth.user) {
       if (props.auth.user.type) {
-        if (props.auth.user.type === 'user') {
-          window.location.href = '/dashboard';
+        if (props.auth.user.type === 'admin') {
+          window.location.href = '/availableForm';
         }
         if (props.auth.user.type === 'user') {
           window.location.href = '/form';
@@ -164,8 +164,11 @@ const Login = props => {
         const { token } = res.data;
         localStorage.setItem('jwtToken', token);
         const decoded = jwt_decode(localStorage.jwtToken);
-        if (decoded.type === 'user') {
-          window.location.href = '/dashboard';
+
+
+
+        if (decoded.type === 'admin') {
+          window.location.href = '/availableForm';
         }
         if (decoded.type === 'user') {
           window.location.href = '/form';

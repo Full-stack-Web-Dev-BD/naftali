@@ -42,11 +42,6 @@ const Sidebar = props => {
 
   const AdminPages = [
     {
-      title: 'Dashboard',
-      href: '/dashboard',
-      icon: <DashboardIcon />
-    },
-    {
       title: 'Form ',
       href: '/availableForm',
       icon: <FeedbackIcon />
@@ -56,7 +51,6 @@ const Sidebar = props => {
       href: '/account',
       icon: <AccountBoxIcon />
     },
-    
   ];
   
   const UserPages = [
@@ -65,22 +59,10 @@ const Sidebar = props => {
       href: '/form',
       icon: <AddBoxIcon />
     },
-    
-    {
-      title: 'Result & Notification',
-      href: '/result',
-      icon: <NotificationsNoneIcon />
-    },
     {
       title: 'Account',
       href: '/account',
       icon: <AccountBoxIcon />
-    },
-    
-    {
-      title: 'Form ',
-      href: '/availableForm',
-      icon: <FormatBoldOutlined />
     },
   ];
 

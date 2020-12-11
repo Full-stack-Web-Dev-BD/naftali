@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
-
 const formSchema = new Schema({
 
-	UID:{
-		type:Schema.Types.ObjectId,
-		required:true
+	UID: {
+		type: Schema.Types.ObjectId,
+		required: true
+	},
+	formAccepted: {
+		type: Boolean,
+		default: false
 	},
 
 	firstName: String,
